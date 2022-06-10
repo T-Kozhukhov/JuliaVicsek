@@ -1,4 +1,7 @@
-##TODO: particle class
+struct particle
+    position
+    orientation::Float64 # angle of particle
+end
 
 function MIC(pos, l)
     return map(x->(mod(x + l/2, l) - l/2), pos)
@@ -31,16 +34,26 @@ catch
     exit()
 end
 
-##TODO: initialise particles properly
-
-for t = 1:iterationCount
-    println("Iteration $t/$iterationCount")
-    println(MIC(t, domainSize))
-    ##TODO: get particle neighbours (bin into cell list first)
-    ##TODO: get particle orientations
-    ##TODO: evolve particles
-
-    ##TODO: plot particles
+##TODO: initialise and place particles properly
+particleList = Array{particle, partCount}
+for i = 1:partCount
+    ##TODO: get random position
+    # randPos = rand(0:.001:domainSize, 2)
+    particleList[i].position = rand(0:.001:domainSize, 2)
+    # randOri = rand(0:.001:2\pi)
+    particleList[i].orientation = rand(0:.001:2\pi)
+    # particleList[i] = particle(randPos, randOri)
+    # push!(particleList, particle(randPos, randOri))
 end
+
+# for t = 1:iterationCount
+#     println("Iteration $t/$iterationCount")
+#     # println(MIC(t, domainSize))
+#     ##TODO: get particle neighbours (bin into cell list first)
+#     ##TODO: get particle orientations
+#     ##TODO: evolve particles
+
+#     ##TODO: plot particles
+# end
 
 ##TODO finish sim
