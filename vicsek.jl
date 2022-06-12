@@ -1,4 +1,5 @@
 import LinearAlgebra: norm
+using Plots
 
 mutable struct particle
     position
@@ -61,7 +62,7 @@ for t = 1:iterationCount
 
     newAngles = Float64[] # list of new angles for each particle
 
-    ##TODO: get particle neighbours and get new orientations and apply noise
+    # get particle neighbours and get new orientations and apply noise
     for p in particleList
         # construct neighbour list
         nList = particle[]
@@ -71,7 +72,7 @@ for t = 1:iterationCount
             end
         end
 
-        # add new computed angle newAngle list
+        # add new computed angle + noise to newAngle list
         push!(newAngles, AverageAngle(nList) + rand(-noise:noise))
     end
 
@@ -86,6 +87,11 @@ for t = 1:iterationCount
     end
 
     ##TODO: plot particles
+    q = (cos.(getfield.(particleList, :orientation)), sin.(getfield.(particleList, :orientation)))
+    x = [p.position[1] for p in particleList]
+    y = [p.position[2] for p in particleList]
+    quiver(x, y, quiver=q)
+    savefig("sim_t=$t.png")
 end
 
 ##TODO finish sim
