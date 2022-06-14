@@ -16,11 +16,16 @@ function PBC(pos, l)
     return map(x->(mod(x, l)), pos)
 end
 
+function unitVec(theta)
+    # return unit vector in direction of theta
+    return [cos(theta), sin(theta)]
+end
+
 function AverageAngle(neighbourList)
     # compute average angle, by using vector, from all particles in neighbour list
     vecSum = [0, 0]
-    for i = 1:length(neighbourList)
-        vecSum += neighbourList[i].position
+    for n in neighbourList
+        vecSum += unitVec(n.orientation)
     end
     return atan(vecSum[2], vecSum[1])
 end
@@ -29,8 +34,9 @@ end
 iterationCount = 1000
 partCount = 500
 partSpeed = 0.25
-neighbourRadii = 1
+neighbourRadii = 2
 domainSize = 50
+noise = 0.5
 println("Arguments:")
 for i = 1:length(ARGS) 
     println("\tArgument $i: $(ARGS[i])")
@@ -83,7 +89,7 @@ for t = 1:iterationCount
 
     # evolve particles
     for p in particleList
-        p.position = PBC(p.position + partSpeed*[cos(p.orientation), sin(p.orientation)], domainSize)
+        p.position = PBC(p.position + partSpeed * unitVec(p.orientation), domainSize)
     end
 
     ##TODO: plot particles
