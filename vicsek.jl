@@ -92,7 +92,15 @@ for t = 1:iterationCount
         p.position = PBC(p.position + partSpeed * unitVec(p.orientation), domainSize)
     end
 
-    ##TODO: plot particles
+    #=
+        TODO: Need to improve plotting, this is super fucking slow.
+        Some ideas:
+        - Only dump ever D frames, taken as an input parameter
+        - Maybe check which of the below lines is the slow one and find a nicer way
+        - Have an accompanying python script that does the actual plotting?
+            - Maybe use multithreading and have this run in the background after each frame?
+        - Or, yeah, just multithread this step in general?
+    =#
     q = (cos.(getfield.(particleList, :orientation)), sin.(getfield.(particleList, :orientation)))
     x = [p.position[1] for p in particleList]
     y = [p.position[2] for p in particleList]
@@ -100,4 +108,9 @@ for t = 1:iterationCount
     savefig("sim_t=$t.png")
 end
 
-##TODO finish sim
+#=
+    TODO/ WIP ideas:
+    - Finish off sim and close it off
+    - Multithread? both cpu and or GPU (if that's easy in Julia?)
+
+=#
